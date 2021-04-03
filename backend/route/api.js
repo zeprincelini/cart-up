@@ -3,11 +3,11 @@ const router = express.Router();
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const path = require('path');
-const knex  = require('./db/knex');
+const knex  = require('../db/knex');
 
 require("dotenv").config()
 
-const Product = require('../model/product');
+//const Product = require('../model/product');
 
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -29,12 +29,9 @@ cloudinary.config({
 
 //localhost:3000/api/products
 router.get('/products', (req, res, next) => {
-    Product.find((err, doc) => {
-        if(err){
-            return console.log('error retrieving products');
-        }
-        res.send(doc);
-    })
+    knex.raw('select * from product').then((products) => {
+        res.send(products.rows)
+    }).catch((err) =>console.log(err))
 })
 
 router.post('/products', upload, (req, res, next) => {
@@ -42,18 +39,16 @@ router.post('/products', upload, (req, res, next) => {
     console.log("file " + req.file)
     let path = req.file.path;
     cloudinary.uploader.upload(path,{folder: "test-two-asset"}).then((result) => {
-    let newProduct = new Product({
-        name: req.body.product,
-        price: req.body.price,
-        path: result.url
-    });
-    newProduct.save((err, item) => {
-        if(err){
-            console.log(err)
-        }
-        res.send(item);
-        console.log(item);
-    });
+        // let newProduct = new Product({
+        //     name: req.body.product,
+        //     price: req.body.price,
+        //     path: result.url
+        // });
+        knex.raw('insert into product(product_name, product_price, product_path) values(?, ?, ?)', [req.body.product, req.body.price, result.url])
+        .then((doc) => {
+            res.send(doc);
+        })
+        .catch((err) => console.log(err))
     }).catch((err) => {
         console.log(err)
     });
