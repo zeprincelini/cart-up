@@ -1,7 +1,7 @@
-import { Box, FormControl, FormLabel, FormErrorMessage, 
+import { Box, FormControl, FormLabel, 
          VStack, Input, Button, Center, Divider, Heading,
-         Alert, AlertDescription, AlertIcon, CloseButton, useToast} from '@chakra-ui/react';
-import React, { FC, ReactElement, useState, Dispatch, SetStateAction } from 'react';
+         Alert, AlertDescription, AlertIcon} from '@chakra-ui/react';
+import { useState } from 'react';
 
 type AddProp = {
     counter: () => void
@@ -14,7 +14,7 @@ const Add = ({counter}: AddProp) => {
 
     const [success, setSuccess] = useState(false);
     const [failure, setFailure] = useState(false);
-    const toast = useToast();
+    //const toast = useToast();
     
     const handler = (e:any) => {
         setImg(e.target.files[0])

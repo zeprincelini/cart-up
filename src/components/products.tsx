@@ -1,3 +1,4 @@
+import Pagination from './pagination';
 import { useState, useEffect } from 'react'
 import { SimpleGrid, Box, Text, Image, Flex, Spacer, Button, Heading } from "@chakra-ui/react";
 
@@ -7,6 +8,8 @@ type ProductProp = {
 
 const Product = ({reloader}: ProductProp) => {
 const [items, setItems] = useState<any>([]);
+const [currentPage, setCurrentPage] = useState(1);
+const [productAmount, setProductAmount] = useState(1);
 
 useEffect(() => {
     const fetchProducts = async () => {
@@ -18,10 +21,16 @@ useEffect(() => {
     fetchProducts()
 }, [reloader])
 
+//currentpage
+const indexOfLastProduct = currentPage * productAmount;
+const indexOfFirstProduct = indexOfLastProduct - productAmount;
+const currentProducts = items.slice(indexOfFirstProduct, indexOfLastProduct);
+const paginate = (no: any) => setCurrentPage(no);
+
     return (
         <Box p={2}>
             <SimpleGrid columns={{sm: 1, md: 3, lg: 4}} spacing={10}>
-                {items.map((product: any) => (
+                {currentProducts.map((product: any) => (
                     <Box key ={product.id} boxShadow="base" p={3}>
                         <Image src={product.product_path} alt="" w="full" />
                         <Flex p={3}>
@@ -35,6 +44,7 @@ useEffect(() => {
                     </Box>
                 ))}
             </SimpleGrid>
+            <Pagination totalProducts = {items.length} productAmount = {productAmount} paginate={paginate}/>
         </Box>
     )
 }

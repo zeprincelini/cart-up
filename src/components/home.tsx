@@ -1,6 +1,5 @@
-import React, { FC, ReactElement } from 'react';
 import {  Box, Flex, Spacer, Text, IconButton } from '@chakra-ui/react';
-import { AddIcon, MinusIcon } from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 
 type appProps = {
     onClick: () => void,
