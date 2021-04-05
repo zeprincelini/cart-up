@@ -5,11 +5,15 @@ const cloudinary = require('cloudinary').v2;
 const path = require('path');
 const knex  = require('../db/knex');
 const redis = require('redis');
-const redis_Port = process.env.PORT || 6379;
+const redis_Port = process.env.REDIS_URL || 6379;
 
 require("dotenv").config()
 
-const client = redis.createClient(redis_Port);
+const client = redis.createClient(redis_Port, {
+    tls: {
+        rejectUnauthorized: false
+    }
+});
 
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
