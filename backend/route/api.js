@@ -9,11 +9,7 @@ const redis_Port = process.env.REDIS_URL || 6379;
 
 require("dotenv").config()
 
-const client = redis.createClient(redis_Port, {
-    tls: {
-        rejectUnauthorized: false
-    }
-});
+const client = redis.createClient(redis_Port);
 
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -44,6 +40,7 @@ router.get('/products', (req, res, next) => {
         }else{
             knex.raw('select * from product').then((products) => {
                 res.send(products.rows);
+                console.log(products.rows)
                 console.log('fetched from postgres')
                 client.setex('products', 100, JSON.stringify(products.rows));
             }).catch((err) =>console.log(err))
