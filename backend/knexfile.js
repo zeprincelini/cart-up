@@ -8,7 +8,8 @@ module.exports = {
     connection: {
       database: process.env.db,
       user:     process.env.user,
-      password: process.env.pass
+      password: process.env.pass,
+      ssl: true
     },
     pool: {
       min: 2,
