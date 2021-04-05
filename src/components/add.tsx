@@ -34,7 +34,7 @@ const Add = ({counter}: AddProp) => {
     }
 
     const upload = async (data: any) => {
-        await fetch('http://localhost:5000/api/products', {
+        await fetch('/api/products', {
             method: 'POST',
             body: data
         }).then((response) => {

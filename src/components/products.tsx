@@ -13,7 +13,7 @@ const [productAmount, setProductAmount] = useState(1);
 
 useEffect(() => {
     const fetchProducts = async () => {
-        const res = await fetch('http://localhost:5000/api/products');
+        const res = await fetch('/api/products');
         let data = await res.json();
         setItems(data)
         console.log(data)
